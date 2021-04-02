@@ -5,9 +5,16 @@ const cors = require('cors');
 const app = express();
 const port = 4000;
 
+const routes = require('./routes');
+
+
 app.use(cors());
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(routes);
+
+
 
 const User = mongoose.model('User', {
     email: String,
@@ -17,8 +24,7 @@ const User = mongoose.model('User', {
 app.put('/user', (req, res) => {
     const user = new User(req.body)
     user.save()
-        .then((newUser) => {
-            
+        .then((newUser) => {    
             console.log(newUser)
             res.json(newUser) 
         })
@@ -27,6 +33,19 @@ app.put('/user', (req, res) => {
             res.sendStatus(500)
         });
 })
+
+
+/*
+User.find({email:'roifr369@gmail.com'}, (error, data)=> {
+                                
+    if (error) {
+        console.log(error)
+    } else {
+        console.log(data)
+    }
+})
+*/
+
 
 mongoose.connect('mongodb://localhost/comment', {
     useUnifiedTopology: true,
